@@ -26,6 +26,7 @@ function verifySlackRequest(req: NextRequest, body: string): boolean {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('SLACK_SIGNING_SECRET exists:', !!process.env.SLACK_SIGNING_SECRET);
     const body = await req.text();
     const payload = JSON.parse(body);
 
