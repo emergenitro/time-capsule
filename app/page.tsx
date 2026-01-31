@@ -1,13 +1,13 @@
 export default function Home() {
   return (
     <div style={{ 
-      maxWidth: '600px', 
-      margin: '100px auto', 
+      maxWidth: '50%', 
+      margin: '10% auto', 
       padding: '20px',
       fontFamily: 'system-ui, sans-serif',
       lineHeight: '1.6'
     }}>
-      <h1>🎭 Reply Guy Bot</h1>
+      <h1>Reply Guy Bot</h1>
       <p>
         A Slack bot that creates a chain of absurdist mundane statements.
       </p>
