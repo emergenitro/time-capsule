@@ -1,0 +1,27 @@
+{
+  "name": "reply-guy-bot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@slack/web-api": "^7.0.0",
+    "@vercel/postgres": "^0.5.1",
+    "drizzle-orm": "^0.29.3",
+    "next": "14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.10",
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "typescript": "^5.3.3"
+  }
+}
