@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       )
       .returning();
 
-    const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const eligibleUsers = await db
       .select()
       .from(users)
@@ -31,7 +31,8 @@ export async function GET(req: NextRequest) {
         and(
           eq(users.isOptedIn, true),
           eq(users.owesReply, false),
-          sql`(${users.lastMessageSentAt} IS NULL OR ${users.lastMessageSentAt} < ${twelveHoursAgo})`
+          // Either never got a message, or got one more than 24 hours ago
+          sql`(${users.lastMessageSentAt} IS NULL OR ${users.lastMessageSentAt} < ${twentyFourHoursAgo})`
         )
       );
 
@@ -40,7 +41,7 @@ export async function GET(req: NextRequest) {
     }
 
     const numToMessage = Math.min(
-      Math.floor(Math.random() * 3) + 1,
+      Math.floor(Math.random() * 6) + 5,
       eligibleUsers.length
     );
 
