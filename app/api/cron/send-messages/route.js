@@ -12,13 +12,37 @@ export async function GET(request) {
     const sql = neon(process.env.DATABASE_URL);
 
     const messages = await sql`
-        SELECT id, email, name, message FROM messages
+        SELECT id, email, name, message, created_at FROM messages
         WHERE send_at <= NOW() AND sent = FALSE
     `;
 
     for (const msg of messages) {
         try {
-            await sendMail(msg.email, "Your Time Capsule Message", `Hi ${msg.name},\n\nHere is your message:\n\n${msg.message}\n\nBest,\nTime Capsule Team`);
+            const greeting = msg.name ? `Hi ${msg.name},` : "Hey there,";
+            const sentDate = new Date(msg.created_at).toLocaleDateString("en-GB", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+
+            const emailBody = `${greeting}
+
+A little while ago, you wrote yourself a message and sealed it away - and today's the day it finally reaches you.
+
+Here's what you had to say:
+
+———
+
+${msg.message}
+
+———
+
+This message was written on ${sentDate} (EU/UK date format btw). Hope it brings back some memories, makes you smile, or maybe even surprises you a little.
+
+take care of yourself,
+karthik`;
+
+            await sendMail(msg.email, "📬 A message from your past self", emailBody);
             await sql`
                 UPDATE messages SET sent = TRUE WHERE id = ${msg.id}
             `;
