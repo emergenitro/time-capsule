@@ -25,6 +25,13 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email || !formData.message) {
+      document.getElementById("successerror-message").textContent = "Please fill in all required fields. Naughty naughty (I see you tryna find vulns)!";
+      document.getElementById("successerror-message").style.color = "#E74C3C";
+      return;
+    }
+    
     const response = await fetch("/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -46,11 +53,11 @@ export default function Home() {
     <div className="max-w-xl w-full mx-auto p-4 flex items-center justify-center h-screen main">
       <Form onSubmit={handleSubmit} style={FORM_SHADOW} className="w-full border border-gray-200 p-6 rounded shadow">
         <h1 className="text-2xl font-bold mb-4">Send a Time Capsule Message</h1>
-        <label className="block mb-1">Email:</label>
+        <label className="block mb-1">Email<span className="text-red-500">*</span></label>
         <input type="email" value={formData.email} onChange={handleChange} name="email" placeholder="Your email" className="w-full p-2 border border-gray-300 rounded" required />
-        <label className="block mb-1 mt-4">Name:</label>
-        <input type="text" value={formData.name} onChange={handleChange} name="name" placeholder="Your name" className="w-full p-2 border border-gray-300 rounded" required />
-        <label className="block mb-1 mt-4">Message:</label>
+        <label className="block mb-1 mt-4">Name</label>
+        <input type="text" value={formData.name} onChange={handleChange} name="name" placeholder="Your name" className="w-full p-2 border border-gray-300 rounded" />
+        <label className="block mb-1 mt-4">Message<span className="text-red-500">*</span></label>
         <textarea value={formData.message} onChange={handleChange} name="message" placeholder="Your message" className="min-h-24 w-full p-2 border border-gray-300 rounded field-sizing-content resize-none" required></textarea>
         <button type="submit" className="hover:cursor-pointer mt-4 block w-full p-2 rounded bg-blue-400 text-white hover:bg-blue-500 transition-colors">Send Message</button>
         <p className="text-sm mt-2" id="successerror-message"></p>
