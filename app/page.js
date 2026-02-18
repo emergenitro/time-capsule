@@ -31,7 +31,7 @@ export default function Home() {
       document.getElementById("successerror-message").style.color = "#E74C3C";
       return;
     }
-    
+
     const response = await fetch("/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
