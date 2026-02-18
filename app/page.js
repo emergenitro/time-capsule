@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "next/form";
 
 const FORM_SHADOW = {
@@ -18,6 +18,8 @@ export default function Home() {
     name: "",
     message: "",
   });
+  const [message, setMessage] = useState("");
+  const [messageColor, setMessageColor] = useState("#000");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,8 +29,8 @@ export default function Home() {
     e.preventDefault();
 
     if (!formData.email || !formData.message) {
-      document.getElementById("successerror-message").textContent = "Please fill in all required fields. Naughty naughty (I see you tryna find vulns)!";
-      document.getElementById("successerror-message").style.color = "#E74C3C";
+      setMessage("Email and message are required.");
+      setMessageColor("#E74C3C");
       return;
     }
 
@@ -39,14 +41,14 @@ export default function Home() {
     });
     
     if (!response.ok) {
-      document.getElementById("successerror-message").textContent = "Failed to send message. Please try again.";
-      document.getElementById("successerror-message").style.color = "#E74C3C";
+      setMessage("Failed to send message. Please try again later.");
+      setMessageColor("#E74C3C");
       return;
     }
 
     setFormData({ email: "", name: "", message: "" });
-    document.getElementById("successerror-message").textContent = "Message sent successfully!";
-    document.getElementById("successerror-message").style.color = "#04b34f";
+    setMessage("Message sent successfully!");
+    setMessageColor("#04b34f");
   }
 
   return (
@@ -60,7 +62,7 @@ export default function Home() {
         <label className="block mb-1 mt-4">Message<span className="text-red-500">*</span></label>
         <textarea value={formData.message} onChange={handleChange} name="message" placeholder="Your message" className="min-h-24 w-full p-2 border border-gray-300 rounded field-sizing-content resize-none" required></textarea>
         <button type="submit" className="hover:cursor-pointer mt-4 block w-full p-2 rounded bg-blue-400 text-white hover:bg-blue-500 transition-colors">Send Message</button>
-        <p className="text-sm mt-2" id="successerror-message"></p>
+        <p className="text-sm mt-2" style={{ color: messageColor }}>{message}</p>
         <p className="text-sm mt-4">Your message will be sent at a random time anytime between the next hour to the next year!</p>
       </Form>
     </div>
